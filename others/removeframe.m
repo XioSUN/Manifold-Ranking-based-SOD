@@ -8,6 +8,7 @@ if size(input_im, 3)==3
     gray=rgb2gray(input_im);
 else
     gray = input_im;
+    input_im = gray2rgb(input_im);
 end
 
 edgemap = edge(gray,'canny');

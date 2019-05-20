@@ -19,11 +19,13 @@ for ii=1:length(imnames)
     disp(ii);
     imname=[imgRoot imnames(ii).name]; 
     [input_im,w]=removeframe(imname);% run a pre-processing to remove the image frame
-    [m,n,k] = size(input_im);
-
-%%----------------------generate superpixels--------------------%%
+    [m,n,k] = size(input_im); 
+    
+%%----------------------generate superpixels--------------------%%      
     imname=[imname(1:end-4) '.bmp'];% the slic software support only the '.bmp' image
-    comm=['SLICSuperpixelSegmentation' ' ' imname ' ' int2str(20) ' ' int2str(spnumber) ' ' supdir];
+    
+    %指令为‘文件名 20 200 超像素文件地址（用于指定输出位置）’，weight:20, superpixelnumber:200;
+    comm=['SLICSuperpixelSegmentation' ' ' imname ' ' int2str(20) ' ' int2str(spnumber) ' ' supdir]; 
     system(comm);    
     spname=[supdir imnames(ii).name(1:end-4)  '.dat'];
     superpixels=ReadDAT([m,n],spname); % superpixel label matrix
@@ -112,19 +114,19 @@ for ii=1:length(imnames)
     bsalc=(bsalt.*bsald.*bsall.*bsalr);
     bsalc=(bsalc-min(bsalc(:)))/(max(bsalc(:))-min(bsalc(:)));
     
-% % assign the saliency value to each pixel     
-%      tmapstage1=zeros(m,n);
-%      for i=1:spnum
-%         tmapstage1(inds{i})=bsalc(i);
-%      end
-%      tmapstage1=(tmapstage1-min(tmapstage1(:)))/(max(tmapstage1(:))-min(tmapstage1(:)));
-%      
-%      mapstage1=zeros(w(1),w(2));
-%      mapstage1(w(3):w(4),w(5):w(6))=tmapstage1;
-%      mapstage1=uint8(mapstage1*255);  
-% 
-%      outname=[saldir imnames(ii).name(1:end-4) '_stage1' '.png'];
-%      imwrite(mapstage1,outname);
+% assign the saliency value to each pixel     
+     tmapstage1=zeros(m,n);
+     for i=1:spnum
+        tmapstage1(inds{i})=bsalc(i);
+     end
+     tmapstage1=(tmapstage1-min(tmapstage1(:)))/(max(tmapstage1(:))-min(tmapstage1(:)));
+     
+     mapstage1=zeros(w(1),w(2));
+     mapstage1(w(3):w(4),w(5):w(6))=tmapstage1;
+     mapstage1=uint8(mapstage1*255);  
+
+     outname=[saldir imnames(ii).name(1:end-4) '_stage1' '.png'];
+     imwrite(mapstage1,outname);
 
 %%----------------------stage2-------------------------%%
 % binary with an adaptive threhold (i.e. mean of the saliency map)
@@ -142,11 +144,10 @@ for ii=1:length(imnames)
     end
     tmapstage2=(tmapstage2-min(tmapstage2(:)))/(max(tmapstage2(:))-min(tmapstage2(:)));
 
-%     mapstage2=zeros(w(1),w(2));
-%     mapstage2(w(3):w(4),w(5):w(6))=tmapstage2;
+    mapstage2=zeros(w(1),w(2));
+    mapstage2(w(3):w(4),w(5):w(6))=tmapstage2;
     mapstage2=uint8(tmapstage2*255);
-%     outname=[saldir imnames(ii).name(1:end-4) '_stage2' '.png'];   
-    outname=[saldir imnames(ii).name(1:end-4) '.png'];   
+    outname=[saldir imnames(ii).name(1:end-4) '_stage2' '.png'];   
     imwrite(tmapstage2,outname);
     
     
