@@ -5,3 +5,9 @@ initial version:
 	by Chuan Yang, Lihe Zhang, Huchuan Lu, Ming-Hsuan Yang, and Xiang Ruan
 description: 
 	do not support the gray image;
+	
+version 1.0: 
+	add function gray2rgb.m, which copy single channel information to multiple channels,
+	thus generate a pseudo color map for latter processing.
+description: 	
+	support the gray image in a simple but effective way;

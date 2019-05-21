@@ -1,6 +1,6 @@
 % 'SLICSuperpixelSegmentation.exe' can not process gray images, 
-% consider converting single channel information to three channels(rgb),
-% which can be thought of pseudo color map.
+% consider copying information from a single channel to multiple channels(RGB),
+% the generated picture can be thought of a pseudo color map.
 % by XioSUN
 
 function PseudoRGB =gray2rgb(input_im)
